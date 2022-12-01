@@ -16,7 +16,16 @@ export const Header = () => {
       <a href="#contact" id="contact">kontakt</a>
     </nav>
   </div>
-
 `;
+
+  const rolloutNav = element.querySelector('.rollout-nav');
+  element.querySelector('.nav-btn').addEventListener('click', () => {
+    rolloutNav.classList.toggle('nav-closed');
+  });
+
+  rolloutNav.addEventListener('click', () => {
+    rolloutNav.classList.add('nav-closed');
+  });
+
   return element;
 };
