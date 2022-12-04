@@ -1,8 +1,10 @@
 import './style.css';
-import { Layer } from './components/Layer/index.js';
+
 import { Drink } from './components/Drink/index.js';
 
-export const Menu = () => {
+export const Menu = (props) => {
+  const { drinks } = props;
+
   const element = document.createElement('section');
   element.classList.add('menu');
 
@@ -26,30 +28,54 @@ export const Menu = () => {
 `;
 
   const drinksList = element.querySelector('.drinks-list');
+
   // drinksList.append(
-  //   Layer({
-  //     color: '#613916',
-  //     label: 'espresso',
+  //   Drink({
+  //     id: 'romano',
+  //     name: 'Romano',
+  //     ordered: false,
+  //     image: 'https://apps.kodim.cz/daweb/cafelora/assets/cups/romano.png',
+  //     layers: [
+  //       {
+  //         color: '#fbdf5b',
+  //         label: 'citrón',
+  //       },
+  //       {
+  //         color: '#613916',
+  //         label: 'espresso',
+  //       },
+  //     ],
   //   }),
   // );
 
+  if (drinks === undefined) {
+    fetch(`https://apps.kodim.cz/daweb/cafelora/api/me/drinks`, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Email mir.ka@gmail.com',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('data: ', data);
+        element.replaceWith(
+          Menu({
+            drinks: data.results,
+          }),
+        );
+      });
+    return element;
+  }
+
   drinksList.append(
-    Drink({
-      id: 'romano',
-      name: 'Romano',
-      ordered: false,
-      image: 'https://apps.kodim.cz/daweb/cafelora/assets/cups/romano.png',
-      layers: [
-        {
-          color: '#fbdf5b',
-          label: 'citrón',
-        },
-        {
-          color: '#613916',
-          label: 'espresso',
-        },
-      ],
-    }),
+    ...drinks.map((drink) =>
+      Drink({
+        name: drink.name,
+        ordered: drink.ordered,
+        image: drink.image,
+        layers: drink.layers,
+      }),
+    ),
   );
 
   return element;

@@ -16,7 +16,7 @@ const headerElement = document.createElement('header');
 headerElement.append(Header());
 
 const mainElement = document.createElement('main');
-mainElement.append(Banner(), Menu(), Gallery(), Contact());
+mainElement.append(Banner(), Menu({}), Gallery(), Contact());
 
 const footerElement = document.createElement('footer');
 footerElement.append(Footer());
