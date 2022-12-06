@@ -3,10 +3,17 @@
 import { Layer } from '../Layer/index.js';
 
 export const Drink = (props) => {
-  const { name, ordered, image, layers } = props;
+  const { name, ordered, image, layers, drinkId } = props;
 
   const element = document.createElement('div');
   element.classList.add('drink');
+
+  let btnText = 'Objednat';
+  let btnClass = '';
+  if (ordered === false) {
+    btnText = 'Zrušit';
+    btnClass = 'order-btn--ordered';
+  }
 
   element.innerHTML = `
 <div class="drink__product">
@@ -21,7 +28,7 @@ export const Drink = (props) => {
   </div>
 </div>
 <div class="drink__controls">
-  <button class="order-btn">Objednat</button>
+  <button class="order-btn" ${btnClass}>${btnText}</button>
 </div>
 `;
 
@@ -35,5 +42,31 @@ export const Drink = (props) => {
     ),
   );
 
+  const btn = element.querySelector('.order-btn');
+
+  // btn.addEventListener('click', () => {
+  //   if (ordered === false) {
+  //     btn.textContent = 'Zrušit';
+  //   } else if (ordered === true) {
+  //     btn.textContent = 'Objednat';
+  //     btn.classList.add('order-btn--ordered');
+  //   }
+  // });
+
+  btn.addEventListener('click', () => {
+    fetch(`https://apps.kodim.cz/daweb/cafelora/api/me/drinks/${drinkId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Email mir.ka@gmail.com',
+      },
+      body: JSON.stringify({ ordered: true }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data.results)
+        element.replaceWith(Drink(data.results));
+      });
+  });
   return element;
 };

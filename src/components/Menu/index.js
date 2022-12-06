@@ -74,6 +74,7 @@ export const Menu = (props) => {
         ordered: drink.ordered,
         image: drink.image,
         layers: drink.layers,
+        drinkId: drink.id,
       }),
     ),
   );
