@@ -64,8 +64,16 @@ export const Drink = (props) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data.results)
-        element.replaceWith(Drink(data.results));
+        console.log(data.results),
+          element.replaceWith(
+            Drink({
+              name: data.results.name,
+              ordered: data.results.ordered,
+              image: data.results.image,
+              layers: data.results.layers,
+              drinkId: data.results.id,
+            }),
+          );
       });
   });
   return element;
