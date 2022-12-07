@@ -60,7 +60,7 @@ export const Drink = (props) => {
         'Content-Type': 'application/json',
         Authorization: 'Email mir.ka@gmail.com',
       },
-      body: JSON.stringify({ ordered: true }),
+      body: JSON.stringify({ ordered: !ordered }),
     })
       .then((response) => response.json())
       .then((data) => {
